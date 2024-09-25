@@ -12,13 +12,14 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors({
-  origin: process.env.CLIENT_URL || 'https://fuct-frontend.vercel.app' , 
-  credentials: true, // Allows cookies and credentials
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-}));
 
+// Updated CORS configuration to allow all origins
+app.use(cors({
+  origin: '*',  // This allows all origins
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 // Connect to database
 connectDB();
@@ -65,27 +66,3 @@ app.listen(PORT, () => {
 
 // Export the Express API for Vercel
 module.exports = app;
-
-
-
-
-
-// "routes": [
-//   {
-//   "src": "/api/(.*)",
-//   "dest": "./index.js"
-//   },
-//   {
-//   "src": "/(.*)",
-//   "dest": "./index.js"
-//   }
-// ],
-
-
-// "rewrites": [
-//   {
-//     "source": "/(.*)",
-//     "destination": "/",
-//   }
-// ],
-
