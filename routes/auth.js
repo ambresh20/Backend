@@ -10,6 +10,7 @@ const passport = require("passport");
 const { loginSuccess } = require("../controller/googleAuthController");
 const adminLogin = require("../controller/adminLogin") ;
 const allUser = require("../controller/getUser") ;
+const storeUserDashboard = require("../controller/userDataStore") ;
 
 const router = express.Router();
 
@@ -24,6 +25,9 @@ router.post("/login", login);
 
 // Store contact data ROUTE
 router.post("/contact-store", contactStore);
+
+// Store User Form Data from user Dashboard
+router.post("/user-store", storeUserDashboard) ;
 
 // FORGET and reset
 router.post("/forgot-password", forgetPassword);
