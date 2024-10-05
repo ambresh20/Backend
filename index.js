@@ -13,9 +13,9 @@ const app = express();
 // Middleware
 app.use(bodyParser.json());
 
-// Updated CORS configuration to allow all origins
+// CORS configuration to allow all origins
 app.use(cors({
-  origin: '*',  // This allows all origins
+  origin: '*',  
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -43,9 +43,12 @@ app.use(passport.session());
 // Routes
 app.use("/", authRoutes);
 
+// Different View
+// app.set('view engine', 'ejs') ;
+
 // Home route
 app.get("/", (req, res) => {
-  res.send("<h1>Backend page</h1>");
+  res.send("<h1>Backend page</h1>"); 
 });
 
 app.get("/home", (req, res) => {
@@ -64,5 +67,16 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-// Export the Express API for Vercel
+
+const postRouters = require("./routes/postRouters") ;
+const categoryRoutes = require('./routes/categoryRouter');  
+const tagRoutes = require('./routes/tagRouter');  
+
+app.use('/api/posts', postRouters);
+app.use('/api/categories', categoryRoutes); 
+app.use('/api/tags', tagRoutes);  
+
+
+// Export the Express 
 module.exports = app;
+
