@@ -1,6 +1,8 @@
 const express = require('express');
-const Tag = require('../model/tagModel'); 
+const Tag = require('../model/tagModel');
+const Post = require('../model/postModel'); 
 const router = express.Router();
+
 
 router.post('/', async (req, res) => {
   try {
@@ -21,4 +23,27 @@ router.get('/', async (req, res) => {
   }
 });
 
-module.exports = router;
+// get posts by tag slug
+router.get('/:slug', async (req, res) => {
+  try {
+    const tag = await Tag.findOne({ slug: req.params.slug });
+    if (!tag) {
+      return res.status(404).json({ message: 'Tag not found' });
+    }
+
+    const posts = await Post.find({ tags: tag._id })
+      .populate('categories', 'name slug')
+      .populate('tags', 'name slug')
+      .select('title slug content metaDescription createdAt');
+
+    res.json({
+      tag,
+      posts
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+module.exports = router ;
